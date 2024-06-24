@@ -1,0 +1,103 @@
+import random 
+import math
+import pygame
+
+HANGMAN_PICS=[
+ '''
+ +---+
+ O   |
+     |
+     |
+    ===''', 
+    '''
+ +---+
+ O   |
+ |   |
+     |
+    ===''',  
+      '''
+ +---+
+ O   |
+/|   |
+     |
+    ===''', 
+    '''
+ +---+
+ O   |
+/|\  |
+     |
+    ===''', 
+        '''
+ +---+
+ O   |
+/|\  |
+/    |
+    ===''', 
+           '''
+ +---+
+ O   |
+/|\  |
+/ \  |
+    ===''']
+
+words = "ant baboon badger bat bear beaver camel cat clam cobra cougar coyote crow deer dog donkey duck eagle ferret fox frog goat goose hawk lion lizard llama mole monkey moose mouse mule newt otter owl panda parrot pigeon python rabbit ram rat raven rhino salmon seal shark sheep skunk sloth snake spider stork swan tiger toad trout turkey turtle weasel whale wolf wombat zebra".split()
+
+ActualWord=""
+
+#Functions to use
+
+def GetRandomWord(words): 
+    number=random.randint(0,len(words)-1)
+    return words[number]
+def AddHashMark(word,letter):
+    result=True 
+    for l in word:
+        if(letter==l): 
+            result=False
+    return result
+           
+            
+def AddRightLetter(word,letter,slate): 
+    position=0
+    for l in range(len(word)): 
+        for m in range(len(slate)):
+            if(letter==word[l]and l==m):
+                slate=list(slate)
+                word=list(word)
+                slate[m]=word[l]
+    return slate           
+    
+def main(): 
+    letter=""
+    slate=""
+    attempts=1
+    WrongAttempts=0
+    ActualWord='llama'
+    # ActualWord=GetRandomWord(words)
+    print()
+    print("Lets Play Hangman!")
+    for l in ActualWord: 
+        slate+="_"
+    
+   
+    while WrongAttempts<=6 or slate==ActualWord: 
+        if(WrongAttempts==6): 
+            print("Game is Over!")
+            print("Actual Word is "+ActualWord)
+            break
+        else:
+            
+            print("Guess A Letter!")
+            for s in slate: 
+                print(s,end="")
+            letter=str(input("\n"))
+
+            if(AddHashMark(ActualWord,letter)): 
+                print("No "+ str(letter)+" appears")
+                print(HANGMAN_PICS[WrongAttempts])
+                WrongAttempts+=1
+            else: 
+                slate=AddRightLetter(ActualWord,letter,slate)
+                
+            
+main()
